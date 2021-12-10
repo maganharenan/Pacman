@@ -39,9 +39,10 @@ public class World {
                         Game.player.setY(axisY * TILE_SIZE);
                     }
                     else if (currentPixel == 0xFF4846B6) {
-                        //Enemy enemy = new Enemy(axisX * 24, axisY * 24,24,24, Entity.enemy_entity);
-                        //Game.entities.add(enemy);
-                        //Game.enemies.add(enemy);
+                        System.out.println("aiiiiii papai");
+                        Enemy enemy = new Enemy(axisX * 16, axisY * 16,16,16, Entity.idleGhost, 1, 1);
+                        Game.entities.add(enemy);
+                        Game.enemies.add(enemy);
                     }
                 }
             }

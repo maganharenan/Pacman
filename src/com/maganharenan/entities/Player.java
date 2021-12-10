@@ -16,8 +16,12 @@ public class Player extends Entity {
     private int frames = 0, maxFrames = 5, animationIndex = 0, maxAnimationIndex = 3;
     private BufferedImage idleRight;
     private BufferedImage idleLeft;
+    private BufferedImage idleUp;
+    private BufferedImage idleDown;
     private BufferedImage[] movingLeft;
     private BufferedImage[] movingRight;
+    private BufferedImage[] movingUp;
+    private BufferedImage[] movingDown;
 
     public Player(int x, int y, int width, int height, BufferedImage sprite, double life, double maxLife) {
         super(x, y, width, height, sprite, life, maxLife, 2);
@@ -26,13 +30,19 @@ public class Player extends Entity {
     }
 
     private void loadSprites() {
-        idleRight = Game.spritesheet.getSprite(0,0,getWidth(),getHeight());
-        idleLeft = Game.spritesheet.getSprite(0, 16, getWidth(), getHeight());
+        idleRight = Game.spritesheet.getSprite(16,0,getWidth(),getHeight());
+        idleLeft = Game.spritesheet.getSprite(16, 16, getWidth(), getHeight());
+        idleUp = Game.spritesheet.getSprite(16, 32, getWidth(), getHeight());
+        idleDown = Game.spritesheet.getSprite(16, 48, getWidth(), getHeight());
         movingRight = this.getSpritesArray(4, 0, 0);
         movingLeft = this.getSpritesArray(4, 0, 16);
+        movingUp = this.getSpritesArray(4, 0, 32);
+        movingDown = this.getSpritesArray(4, 0, 48);
     }
 
     public void tick() {
+        this.setDepth(1);
+
         moved = false;
         if (right && World.pathIsFree((int)(this.getX() + this.getSpeed()), this.getY())) {
             moved = true;
@@ -74,6 +84,10 @@ public class Player extends Entity {
                 graphics.drawImage(movingRight[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
             } else if (left) {
                 graphics.drawImage(movingLeft[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            } else if (up) {
+                graphics.drawImage(movingUp[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            } else if (down) {
+                graphics.drawImage(movingDown[animationIndex], this.getX() - Camera.x, this.getY() - Camera.y, null);
             }
         } else {
             switch (direction) {
@@ -82,6 +96,12 @@ public class Player extends Entity {
                     break;
                 case 1: // left direction
                     graphics.drawImage(idleLeft, this.getX() - Camera.x, this.getY() - Camera.y, null);
+                    break;
+                case 2: // up direction
+                    graphics.drawImage(idleUp, this.getX() - Camera.x, this.getY() - Camera.y, null);
+                    break;
+                case 3: // down direction
+                    graphics.drawImage(idleDown, this.getX() - Camera.x, this.getY() - Camera.y, null);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + direction);
